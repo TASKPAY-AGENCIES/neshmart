@@ -10,6 +10,7 @@ const productRoutes = require('./routes/products');
 const mpesaRoutes = require('./routes/mpesa');
 const escrowRoutes = require('./routes/escrow');
 const sellerRoutes = require('./routes/seller');
+const adminRoutes = require('./routes/admin');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/mpesa', mpesaRoutes);
 app.use('/api/escrow', escrowRoutes);
 app.use('/api/seller', sellerRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
 app.use(errorHandler);
