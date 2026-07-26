@@ -117,7 +117,10 @@ async function stkCallback(req, res, next) {
       const transaction = txUpdate.rows[0];
 
       await pool.query(
-        "UPDATE products SET quantity = GREATEST(quantity - 1, 0) WHERE id = $1",
+        `UPDATE products
+         SET quantity = GREATEST(quantity - 1, 0),
+             status = CASE WHEN quantity - 1 <= 0 THEN 'SOLD' ELSE status END
+         WHERE id = $1`,
         [transaction.product_id]
       );
       await pool.query(
