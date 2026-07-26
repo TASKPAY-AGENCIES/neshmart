@@ -62,10 +62,7 @@ export default function ProductCard({ product, onBuy, onWishlist }) {
               Buy via M-Pesa
             </button>
           )}
-        
-            Buy via M-Pesa
-          </button>
-          {whatsappLink && (
+          {product.status !== 'SOLD' && whatsappLink && (
             <a
               href={whatsappLink}
               target="_blank"
