@@ -4,6 +4,7 @@ import Auth from './pages/Auth';
 import Marketplace from './pages/Marketplace';
 import BuyerDashboard from './pages/BuyerDashboard';
 import SellerDashboard from './pages/SellerDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
@@ -19,6 +20,10 @@ export default function App() {
       <Route
         path="/dashboard/seller"
         element={<ProtectedRoute><SellerDashboard /></ProtectedRoute>}
+      />
+      <Route
+        path="/admin"
+        element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}
       />
     </Routes>
   );
