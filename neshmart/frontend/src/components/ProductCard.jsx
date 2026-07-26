@@ -49,12 +49,20 @@ export default function ProductCard({ product, onBuy, onWishlist }) {
           <span className="text-[10px] text-slate-400">{timeAgo(product.created_at)}</span>
         </div>
         <p className="text-[11px] text-slate-400">{product.quantity} available</p>
-
-        <div className="mt-2 flex gap-2">
-          <button
-            onClick={() => onBuy?.(product)}
-            className="flex-1 bg-brand-orange text-white text-xs font-semibold py-2 rounded-lg hover:bg-orange-600 transition"
-          >
+<div className="mt-2 flex gap-2">
+          {product.status === 'SOLD' ? (
+            <button disabled className="flex-1 bg-slate-300 text-white text-xs font-semibold py-2 rounded-lg cursor-not-allowed">
+              Sold Out
+            </button>
+          ) : (
+            <button
+              onClick={() => onBuy?.(product)}
+              className="flex-1 bg-brand-orange text-white text-xs font-semibold py-2 rounded-lg hover:bg-orange-600 transition"
+            >
+              Buy via M-Pesa
+            </button>
+          )}
+        
             Buy via M-Pesa
           </button>
           {whatsappLink && (
