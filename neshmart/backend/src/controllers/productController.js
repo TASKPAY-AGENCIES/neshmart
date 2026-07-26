@@ -10,7 +10,7 @@ async function listProducts(req, res, next) {
     const limit = Math.min(parseInt(req.query.limit) || 20, 50);
     const offset = (page - 1) * limit;
 
-    const conditions = ["p.status = 'ACTIVE'"];
+    const conditions = ["p.status IN ('ACTIVE', 'SOLD')"];
     const values = [];
 
     if (search) {
