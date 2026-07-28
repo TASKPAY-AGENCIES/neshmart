@@ -1,119 +1,86 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, LayoutDashboard, Package, ShieldCheck, LogOut, Store } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useEffect, useState } from 'react';
+import DashboardLayout from '../components/DashboardLayout';
+import api from '../api/axios';
+import { CheckCircle2, Clock, PackageCheck } from 'lucide-react';
 
-const KABIANGA_BG = 'https://i.postimg.cc/DfHkcTdd/Gemini-Generated-Image-fnfln6fnfln6fnfl.png';
+const STATUS_STYLES = {
+  AWAITING_PAYMENT: 'bg-white/10 text-white/60',
+  HELD_IN_ESCROW: 'bg-brand-orange/20 text-orange-200',
+  RELEASED: 'bg-brand-green/20 text-green-200',
+  REFUNDED: 'bg-red-500/20 text-red-200',
+  DISPUTED: 'bg-red-500/20 text-red-200',
+};
 
-export default function DashboardLayout({ title, subtitle, tabs, activeTab, onTabChange, children }) {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+export default function BuyerDashboard() {
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [releasingId, setReleasingId] = useState(null);
 
-  function handleLogout() {
-    logout();
-    navigate('/');
+  function load() {
+    setLoading(true);
+    api.get('/escrow/mine')
+      .then(({ data }) => setTransactions(data.transactions))
+      .finally(() => setLoading(false));
   }
 
-  const navLinks = [
-    { label: 'Marketplace', icon: Store, to: '/marketplace' },
-    { label: 'Buyer Dashboard', icon: LayoutDashboard, to: '/dashboard/buyer' },
-    { label: 'Seller Dashboard', icon: Package, to: '/dashboard/seller' },
-  ];
-  if (user?.role === 'admin') {
-    navLinks.push({ label: 'Admin Panel', icon: ShieldCheck, to: '/admin' });
+  useEffect(load, []);
+
+  async function handleRelease(transactionId) {
+    if (!confirm('Confirm you have physically inspected this item and want to release payment to the seller?')) return;
+    setReleasingId(transactionId);
+    try {
+      await api.post('/escrow/release', { transactionId });
+      load();
+    } catch (err) {
+      alert(err.response?.data?.error || 'Could not release funds');
+    } finally {
+      setReleasingId(null);
+    }
   }
 
   return (
-    <div className="min-h-screen relative">
-      {/* Blurred background image */}
-      <div
-        className="fixed inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${KABIANGA_BG})`, filter: 'blur(6px) brightness(0.6)', transform: 'scale(1.08)' }}
-      />
-      <div className="fixed inset-0 bg-slate-900/40" />
-
-      <div className="relative flex min-h-screen">
-        {/* Sidebar */}
-        <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white/10 backdrop-blur-2xl border-r border-white/20 p-4">
-          <Link to="/" className="flex items-center gap-2 px-2 py-3 mb-4">
-            <ShoppingBag className="text-brand-orange" size={24} />
-            <span className="text-lg font-extrabold text-white">
-              NESH<span className="text-brand-orange">MART</span>
-            </span>
-          </Link>
-
-          <nav className="flex-1 space-y-1">
-            {navLinks.map(({ label, icon: Icon, to }) => (
-              <Link
-                key={to}
-                to={to}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-white/15 hover:text-white transition"
-              >
-                <Icon size={18} />
-                {label}
-              </Link>
-            ))}
-          </nav>
-
-          {tabs && (
-            <div className="mt-4 pt-4 border-t border-white/15 space-y-1">
-              <p className="px-3 text-[11px] uppercase tracking-wide text-white/50 mb-1">Sections</p>
-              {tabs.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => onTabChange?.(t)}
-                  className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition ${
-                    activeTab === t ? 'bg-white/25 text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-4 pt-4 border-t border-white/15">
-            <p className="px-3 text-sm font-semibold text-white truncate">{user?.full_name}</p>
-            <p className="px-3 text-xs text-white/50 truncate mb-2">{user?.email}</p>
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-white/70 hover:bg-red-500/20 hover:text-white transition"
-            >
-              <LogOut size={16} /> Logout
-            </button>
-          </div>
-        </aside>
-
-        {/* Main content */}
-        <main className="flex-1 p-4 md:p-8 overflow-x-hidden">
-          <div className="max-w-6xl mx-auto">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-white drop-shadow-sm">{title}</h1>
-              {subtitle && <p className="text-white/70 text-sm mt-1">{subtitle}</p>}
-            </div>
-
-            {/* Mobile tab strip (sidebar hidden on small screens) */}
-            {tabs && (
-              <div className="md:hidden flex gap-2 overflow-x-auto pb-3 mb-4">
-                {tabs.map((t) => (
-                  <button
-                    key={t}
-                    onClick={() => onTabChange?.(t)}
-                    className={`shrink-0 px-4 py-1.5 rounded-full text-sm border transition ${
-                      activeTab === t
-                        ? 'bg-white text-slate-800 border-white'
-                        : 'bg-white/10 text-white border-white/30'
-                    }`}
-                  >
-                    {t}
-                  </button>
-                ))}
+    <DashboardLayout title="My Purchases" subtitle="Track your escrow transactions. Only release funds once you've received and inspected your item.">
+      {loading ? (
+        <p className="text-white/60 text-sm">Loading...</p>
+      ) : transactions.length === 0 ? (
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 text-center">
+          <p className="text-white/60 text-sm">No purchases yet. Browse the marketplace to get started.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {transactions.map((t) => (
+            <div key={t.id} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 flex items-center gap-4">
+              <img
+                src={t.image_url || 'https://via.placeholder.com/64'}
+                alt={t.title}
+                className="w-16 h-16 rounded-lg object-cover shrink-0 bg-white/10"
+              />
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-white truncate">{t.title}</p>
+                <p className="text-xs text-white/50">Seller: {t.seller_name}</p>
+                <p className="text-sm font-bold text-white">KES {Number(t.amount).toLocaleString()}</p>
               </div>
-            )}
-
-            {children}
-          </div>
-        </main>
-      </div>
-    </div>
+              <div className="flex flex-col items-end gap-2">
+                <span className={`text-[11px] font-semibold px-2 py-1 rounded-full flex items-center gap-1 ${STATUS_STYLES[t.escrow_status]}`}>
+                  {t.escrow_status === 'RELEASED' && <CheckCircle2 size={12} />}
+                  {t.escrow_status === 'HELD_IN_ESCROW' && <Clock size={12} />}
+                  {t.escrow_status.replace(/_/g, ' ')}
+                </span>
+                {t.escrow_status === 'HELD_IN_ESCROW' && (
+                  <button
+                    onClick={() => handleRelease(t.id)}
+                    disabled={releasingId === t.id}
+                    className="flex items-center gap-1 bg-brand-orange text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50"
+                  >
+                    <PackageCheck size={14} />
+                    {releasingId === t.id ? 'Releasing...' : 'Confirm & Release Funds'}
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </DashboardLayout>
   );
-                }
+}
