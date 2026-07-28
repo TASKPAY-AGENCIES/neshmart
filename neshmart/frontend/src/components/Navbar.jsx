@@ -16,8 +16,12 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
-        <Link to="/" className="flex items-center gap-1 shrink-0">
-          <ShoppingBag className="text-brand-orange" size={26} />
+        <Link to="/" className="flex items-center gap-2 shrink-0">
+          <img
+            src="https://i.postimg.cc/brsDbtfv/Gemini-Generated-Image-4jrsw44jrsw44jrs.png"
+            alt="NESHMART"
+            className="h-9 w-9 rounded-lg object-cover"
+          />
           <span className="text-xl font-extrabold">
             <span className="text-brand-green">NESH</span>
             <span className="text-brand-orange">MART</span>
