@@ -35,7 +35,11 @@ export default function DashboardLayout({ title, subtitle, tabs, activeTab, onTa
         {/* Sidebar */}
         <aside className="hidden md:flex w-64 shrink-0 flex-col bg-white/10 backdrop-blur-2xl border-r border-white/20 p-4">
           <Link to="/" className="flex items-center gap-2 px-2 py-3 mb-4">
-            <ShoppingBag className="text-brand-orange" size={24} />
+            <img
+              src="https://i.postimg.cc/brsDbtfv/Gemini-Generated-Image-4jrsw44jrsw44jrs.png"
+              alt="NESHMART"
+              className="h-8 w-8 rounded-lg object-cover"
+            />
             <span className="text-lg font-extrabold text-white">
               NESH<span className="text-brand-orange">MART</span>
             </span>
