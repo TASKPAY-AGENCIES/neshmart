@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
+import DashboardLayout from '../components/DashboardLayout';
 import api from '../api/axios';
 import { TrendingUp, Package, Wallet, Clock3, Plus, X } from 'lucide-react';
 
@@ -8,11 +8,11 @@ const CONDITIONS = ['New', 'Like New', 'Good', 'Fair', 'Used'];
 
 function StatCard({ icon: Icon, label, value }) {
   return (
-    <div className="bg-white rounded-xl2 border border-slate-100 p-4 flex items-center gap-3">
-      <div className="bg-brand-green/10 text-brand-green p-2 rounded-lg"><Icon size={20} /></div>
+    <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 flex items-center gap-3">
+      <div className="bg-white/15 text-white p-2 rounded-lg"><Icon size={20} /></div>
       <div>
-        <p className="text-xs text-slate-400">{label}</p>
-        <p className="font-bold text-slate-800">{value}</p>
+        <p className="text-xs text-white/50">{label}</p>
+        <p className="font-bold text-white">{value}</p>
       </div>
     </div>
   );
@@ -46,8 +46,8 @@ function SellWizard({ categories, onClose, onCreated }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl2 max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-3 right-3 text-slate-400 hover:text-slate-700">
           <X size={20} />
         </button>
@@ -127,52 +127,52 @@ export default function SellerDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slatebg">
-      <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">Seller Dashboard</h1>
-          <button
-            onClick={() => setShowWizard(true)}
-            className="flex items-center gap-1 bg-brand-orange text-white font-semibold px-4 py-2 rounded-full hover:bg-orange-600"
-          >
-            <Plus size={16} /> Sell Item
-          </button>
-        </div>
+    <DashboardLayout title="Seller Dashboard" subtitle="Manage your listings and track your sales.">
+      <div className="flex justify-end mb-6">
+        <button
+          onClick={() => setShowWizard(true)}
+          className="flex items-center gap-1 bg-brand-orange text-white font-semibold px-4 py-2 rounded-full hover:bg-orange-600"
+        >
+          <Plus size={16} /> Sell Item
+        </button>
+      </div>
 
-        {stats && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-            <StatCard icon={Package} label="Active Listings" value={stats.activeListings} />
-            <StatCard icon={TrendingUp} label="Products Sold" value={stats.productsSold} />
-            <StatCard icon={Clock3} label="Escrow Balance" value={`KES ${stats.escrowBalance.toLocaleString()}`} />
-            <StatCard icon={Wallet} label="Total Revenue" value={`KES ${stats.totalRevenue.toLocaleString()}`} />
+      {stats && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+          <StatCard icon={Package} label="Active Listings" value={stats.activeListings} />
+          <StatCard icon={TrendingUp} label="Products Sold" value={stats.productsSold} />
+          <StatCard icon={Clock3} label="Escrow Balance" value={`KES ${stats.escrowBalance.toLocaleString()}`} />
+          <StatCard icon={Wallet} label="Total Revenue" value={`KES ${stats.totalRevenue.toLocaleString()}`} />
+        </div>
+      )}
+
+      <h2 className="font-semibold text-white mb-3">My Listings</h2>
+      <div className="space-y-2">
+        {listings.map((p) => (
+          <div key={p.id} className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-3 flex items-center gap-3">
+            <img src={p.image_url || 'https://via.placeholder.com/56'} alt={p.title} className="w-14 h-14 rounded-lg object-cover bg-white/10" />
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-white truncate">{p.title}</p>
+              <p className="text-xs text-white/50">{p.status} · KES {Number(p.price).toLocaleString()}</p>
+            </div>
+            <button onClick={() => toggleStatus(p)} className="text-xs px-3 py-1.5 rounded-lg border border-white/20 text-white/80 hover:border-white/50">
+              {p.status === 'ACTIVE' ? 'Pause' : 'Activate'}
+            </button>
+            <button onClick={() => removeListing(p.id)} className="text-xs px-3 py-1.5 rounded-lg border border-red-400/40 text-red-200 hover:bg-red-500/10">
+              Delete
+            </button>
+          </div>
+        ))}
+        {listings.length === 0 && (
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-8 text-center">
+            <p className="text-white/60 text-sm">No listings yet — click "Sell Item" to add one.</p>
           </div>
         )}
-
-        <h2 className="font-semibold text-slate-700 mb-3">My Listings</h2>
-        <div className="space-y-2">
-          {listings.map((p) => (
-            <div key={p.id} className="bg-white rounded-xl2 border border-slate-100 p-3 flex items-center gap-3">
-              <img src={p.image_url || 'https://via.placeholder.com/56'} alt={p.title} className="w-14 h-14 rounded-lg object-cover bg-slate-100" />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-slate-800 truncate">{p.title}</p>
-                <p className="text-xs text-slate-400">{p.status} &middot; KES {Number(p.price).toLocaleString()}</p>
-              </div>
-              <button onClick={() => toggleStatus(p)} className="text-xs px-3 py-1.5 rounded-lg border border-slate-200 hover:border-brand-green">
-                {p.status === 'ACTIVE' ? 'Pause' : 'Activate'}
-              </button>
-              <button onClick={() => removeListing(p.id)} className="text-xs px-3 py-1.5 rounded-lg border border-red-200 text-red-500 hover:bg-red-50">
-                Delete
-              </button>
-            </div>
-          ))}
-          {listings.length === 0 && <p className="text-slate-400 text-sm">No listings yet — click "Sell Item" to add one.</p>}
-        </div>
       </div>
 
       {showWizard && (
         <SellWizard categories={categories} onClose={() => setShowWizard(false)} onCreated={loadAll} />
       )}
-    </div>
+    </DashboardLayout>
   );
-}
+          }
