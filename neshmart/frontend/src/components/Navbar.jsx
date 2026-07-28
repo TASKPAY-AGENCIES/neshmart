@@ -14,13 +14,13 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+    <nav className="sticky top-0 z-40 bg-white/70 backdrop-blur-2xl border-b border-white/40 shadow-sm shadow-black/5">
+      <div className="max-w-7xl mx-auto px-4 py-3.5 flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <img
             src="https://i.postimg.cc/brsDbtfv/Gemini-Generated-Image-4jrsw44jrsw44jrs.png"
             alt="NESHMART"
-            className="h-9 w-9 rounded-lg object-cover"
+            className="h-9 w-9 rounded-xl object-cover shadow-sm"
           />
           <span className="text-xl font-extrabold">
             <span className="text-brand-green">NESH</span>
@@ -35,7 +35,7 @@ export default function Navbar() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search subwoofers, revision materials, hoodies..."
-              className="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-brand-green/40"
+              className="w-full pl-10 pr-4 py-2.5 rounded-full border border-white/60 bg-white/60 backdrop-blur-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-green/40 transition"
             />
           </div>
         </form>
@@ -45,25 +45,25 @@ export default function Navbar() {
             <>
               <Link
                 to={user.role === 'admin' ? '/admin' : '/dashboard/buyer'}
-                className="text-sm font-medium text-slate-700 hover:text-brand-green px-3 py-2"
+                className="text-sm font-medium text-slate-700 hover:text-brand-green px-3 py-2 rounded-full hover:bg-white/60 transition"
               >
                 Hi, {user.full_name?.split(' ')[0]}
               </Link>
               <button
                 onClick={() => { logout(); navigate('/'); }}
-                className="flex items-center gap-1 text-sm text-slate-500 hover:text-red-500 px-3 py-2"
+                className="flex items-center gap-1 text-sm text-slate-500 hover:text-red-500 px-3 py-2 rounded-full hover:bg-white/60 transition"
               >
                 <LogOut size={16} /> Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/auth?tab=login" className="text-sm font-semibold px-4 py-2 rounded-full hover:bg-slate-100">
+              <Link to="/auth?tab=login" className="text-sm font-semibold px-4 py-2 rounded-full hover:bg-white/60 transition">
                 Login
               </Link>
               <Link
                 to="/auth?tab=register"
-                className="text-sm font-semibold px-4 py-2 rounded-full bg-brand-green text-white hover:bg-green-800 transition"
+                className="text-sm font-semibold px-4 py-2 rounded-full bg-gradient-to-r from-brand-green to-green-700 text-white shadow-md shadow-green-900/20 hover:shadow-lg hover:scale-[1.03] transition"
               >
                 Sign Up
               </Link>
@@ -73,4 +73,4 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
+              }
