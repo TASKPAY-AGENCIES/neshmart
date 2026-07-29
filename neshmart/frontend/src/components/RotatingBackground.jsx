@@ -14,7 +14,7 @@ export default function RotatingBackground() {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((i) => (i + 1) % IMAGES.length);
-    }, 7000);
+    }, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -26,7 +26,7 @@ export default function RotatingBackground() {
           className="absolute inset-0 bg-cover bg-center transition-opacity duration-[1800ms] ease-in-out"
           style={{
             backgroundImage: `url(${src})`,
-            filter: 'blur(6px) brightness(0.55)',
+            filter: 'blur(6px) brightness(0.75)',
             transform: 'scale(1.08)',
             opacity: i === index ? 1 : 0,
           }}
