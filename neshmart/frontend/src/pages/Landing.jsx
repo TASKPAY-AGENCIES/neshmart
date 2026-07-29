@@ -5,8 +5,6 @@ import Navbar from '../components/Navbar';
 import RotatingBackground from '../components/RotatingBackground';
 import Footer from '../components/Footer';
 
-const KABIANGA_BG = 'https://i.postimg.cc/DfHkcTdd/Gemini-Generated-Image-fnfln6fnfln6fnfl.png';
-
 const CAMPUSES = ['All', 'Main Campus', 'Kapkatet', 'Premier Hostels', 'Elite Hostels', 'Kabianga Center'];
 
 const CATEGORIES = [
