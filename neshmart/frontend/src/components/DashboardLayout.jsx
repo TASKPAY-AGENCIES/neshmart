@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, LayoutDashboard, Package, ShieldCheck, LogOut, Store } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import RotatingBackground from './RotatingBackground';
 
 const KABIANGA_BG = 'https://i.postimg.cc/DfHkcTdd/Gemini-Generated-Image-fnfln6fnfln6fnfl.png';
 
