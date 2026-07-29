@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
 import PaymentModal from '../components/PaymentModal';
 import api from '../api/axios';
@@ -89,6 +90,8 @@ export default function Marketplace() {
       {selectedProduct && (
         <PaymentModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
       )}
+
+      <Footer />
     </div>
   );
 }
