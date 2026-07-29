@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShieldAlert } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const KABIANGA_BG = 'https://i.postimg.cc/DfHkcTdd/Gemini-Generated-Image-fnfln6fnfln6fnfl.png';
 
@@ -91,7 +92,9 @@ export default function Landing() {
             ))}
           </div>
         </section>
+
+        <Footer />
       </div>
     </div>
   );
-                }
+}
