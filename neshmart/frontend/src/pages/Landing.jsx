@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShieldAlert } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import RotatingBackground from '../components/RotatingBackground';
 import Footer from '../components/Footer';
 
 const KABIANGA_BG = 'https://i.postimg.cc/DfHkcTdd/Gemini-Generated-Image-fnfln6fnfln6fnfl.png';
@@ -17,12 +18,7 @@ const CATEGORIES = [
 export default function Landing() {
   return (
     <div className="min-h-screen relative">
-      {/* Blurred background image */}
-      <div
-        className="fixed inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${KABIANGA_BG})`, filter: 'blur(6px) brightness(0.55)', transform: 'scale(1.08)' }}
-      />
-      <div className="fixed inset-0 bg-slate-900/30" />
+      <RotatingBackground />
 
       <div className="relative">
         <Navbar />
