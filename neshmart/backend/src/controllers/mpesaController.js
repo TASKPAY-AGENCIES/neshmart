@@ -1,7 +1,7 @@
 const pool = require('../config/db');
 const { stkPush } = require('../utils/daraja');
 
-const PHONE_REGEX = /^2547[0-9]{8}$/;
+const PHONE_REGEX = /^254(7|1)[0-9]{8}$/;
 
 // POST /api/mpesa/stkpush  { productId, phone }
 // Buyer initiates payment for a product. Creates a PENDING transaction
