@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 
-const PHONE_REGEX = /^2547[0-9]{8}$/;
+const PHONE_REGEX = /^254(7|1)[0-9]{8}$/;
 const STUDENT_EMAIL_DOMAIN = '@uo-kabianga.ac.ke';
 
 function signToken(user) {
