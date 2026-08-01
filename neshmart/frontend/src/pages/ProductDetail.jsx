@@ -5,11 +5,13 @@ import Footer from '../components/Footer';
 import PaymentModal from '../components/PaymentModal';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { ArrowLeft, BadgeCheck, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowLeft, BadgeCheck, MapPin, MessageCircle, ShoppingCart } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { addToCart, isInCart } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -92,12 +94,21 @@ export default function ProductDetail() {
                     Sold Out
                   </button>
                 ) : (
-                  <button
-                    onClick={handleBuy}
-                    className="flex-1 bg-brand-orange text-white font-semibold py-3 rounded-xl hover:bg-orange-600 transition"
-                  >
-                    Buy via M-Pesa
-                  </button>
+                  <>
+                    <button
+                      onClick={handleBuy}
+                      className="flex-1 bg-brand-orange text-white font-semibold py-3 rounded-xl hover:bg-orange-600 transition"
+                    >
+                      Buy via M-Pesa
+                    </button>
+                    <button
+                      onClick={() => addToCart(product)}
+                      disabled={isInCart(product.id)}
+                      className="flex items-center justify-center gap-1 bg-brand-green text-white font-semibold px-4 py-3 rounded-xl hover:bg-green-800 transition disabled:opacity-50"
+                    >
+                      <ShoppingCart size={18} /> {isInCart(product.id) ? 'Added' : 'Add to Cart'}
+                    </button>
+                  </>
                 )}
                 {whatsappLink && product.status !== 'SOLD' && (
                   <a
