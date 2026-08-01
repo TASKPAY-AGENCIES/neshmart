@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { MessageCircle, Heart, BadgeCheck, MapPin, Eye } from 'lucide-react';
+import { MessageCircle, Heart, BadgeCheck, MapPin, Eye, ShoppingCart } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 function timeAgo(dateStr) {
   const diffMs = Date.now() - new Date(dateStr).getTime();
@@ -11,7 +12,8 @@ function timeAgo(dateStr) {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
-export default function ProductCard({ product, onBuy, onWishlist }) {
+export default function ProductCard({ product, onWishlist }) {
+  const { addToCart, isInCart } = useCart();
   const whatsappLink = product.whatsapp_number
     ? `https://wa.me/${product.whatsapp_number}?text=${encodeURIComponent(`Hi, is "${product.title}" still available on NESHMART?`)}`
     : null;
@@ -57,6 +59,15 @@ export default function ProductCard({ product, onBuy, onWishlist }) {
           >
             <Eye size={14} /> View Item
           </Link>
+          {product.status !== 'SOLD' && (
+            <button
+              onClick={() => addToCart(product)}
+              disabled={isInCart(product.id)}
+              className="flex items-center justify-center gap-1 bg-brand-green text-white text-xs font-semibold px-3 py-2 rounded-lg hover:bg-green-800 transition disabled:opacity-50"
+            >
+              <ShoppingCart size={14} /> {isInCart(product.id) ? 'Added' : 'Add'}
+            </button>
+          )}
           {product.status !== 'SOLD' && whatsappLink && (
             <a
               href={whatsappLink}
