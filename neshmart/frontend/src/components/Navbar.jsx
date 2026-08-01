@@ -1,10 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, LogOut } from 'lucide-react';
+import { Search, ShoppingBag, LogOut, ShoppingCart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { items } = useCart();
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
 
@@ -41,6 +42,14 @@ export default function Navbar() {
         </form>
 
         <div className="ml-auto flex items-center gap-2 shrink-0">
+          <Link to="/cart" className="relative p-2 rounded-full hover:bg-white/60 transition">
+            <ShoppingCart size={20} className="text-slate-600" />
+            {items.length > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-brand-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {items.length}
+              </span>
+            )}
+          </Link>
           {user ? (
             <>
               <Link
