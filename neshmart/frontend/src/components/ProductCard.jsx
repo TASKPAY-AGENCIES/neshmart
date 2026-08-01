@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { MessageCircle, Heart, BadgeCheck, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { MessageCircle, Heart, BadgeCheck, MapPin, Eye } from 'lucide-react';
 
 function timeAgo(dateStr) {
   const diffMs = Date.now() - new Date(dateStr).getTime();
@@ -50,18 +51,12 @@ export default function ProductCard({ product, onBuy, onWishlist }) {
         </div>
         <p className="text-[11px] text-slate-400">{product.quantity} available</p>
 <div className="mt-2 flex gap-2">
-          {product.status === 'SOLD' ? (
-            <button disabled className="flex-1 bg-slate-300 text-white text-xs font-semibold py-2 rounded-lg cursor-not-allowed">
-              Sold Out
-            </button>
-          ) : (
-            <button
-              onClick={() => onBuy?.(product)}
-              className="flex-1 bg-brand-orange text-white text-xs font-semibold py-2 rounded-lg hover:bg-orange-600 transition"
-            >
-              Buy via M-Pesa
-            </button>
-          )}
+          <Link
+            to={`/product/${product.id}`}
+            className="flex-1 flex items-center justify-center gap-1 bg-brand-orange text-white text-xs font-semibold py-2 rounded-lg hover:bg-orange-600 transition"
+          >
+            <Eye size={14} /> View Item
+          </Link>
           {product.status !== 'SOLD' && whatsappLink && (
             <a
               href={whatsappLink}
