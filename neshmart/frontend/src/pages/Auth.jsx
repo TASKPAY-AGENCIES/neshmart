@@ -47,6 +47,13 @@ export default function Auth() {
         animate={{ opacity: 1, scale: 1 }}
         className="bg-white rounded-xl2 shadow-lg w-full max-w-md p-8"
       >
+        <div className="flex justify-center mb-4">
+          <img
+            src="https://i.postimg.cc/brsDbtfv/Gemini-Generated-Image-4jrsw44jrsw44jrs.png"
+            alt="NESHMART"
+            className="h-16 w-16 rounded-2xl object-cover shadow-md"
+          />
+        </div>
         <h1 className="text-center font-extrabold text-2xl mb-6">
           <span className="text-brand-green">NESH</span><span className="text-brand-orange">MART</span>
         </h1>
