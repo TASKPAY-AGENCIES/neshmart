@@ -5,6 +5,7 @@ import Marketplace from './pages/Marketplace';
 import BuyerDashboard from './pages/BuyerDashboard';
 import SellerDashboard from './pages/SellerDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import ProductDetail from './pages/ProductDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/auth" element={<Auth />} />
       <Route path="/marketplace" element={<Marketplace />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
       <Route
         path="/dashboard/buyer"
         element={<ProtectedRoute><BuyerDashboard /></ProtectedRoute>}
