@@ -54,7 +54,7 @@ export default function ProductDetail() {
 
         {product && (
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="aspect-square bg-white rounded-xl2 border border-slate-100 overflow-hidden">
+            <div className="aspect-square max-w-xs sm:max-w-sm mx-auto md:max-w-none bg-white rounded-xl2 border border-slate-100 overflow-hidden">
               {product.image_url ? (
                 <img src={product.image_url} alt={product.title} className="w-full h-full object-cover" />
               ) : (
